@@ -1,19 +1,21 @@
 #!/bin/bash
 
-# install dependencies
-sudo apt update
-sudo apt install build-essential git cmake libuv1-dev libssl-dev -y
+echo "rig name (for pool)?"
+read name
 
-# download latest xmrig form github
-git clone https://github.com/xmrig/xmrig.git
+echo "# DOWNLOADING XMRIG..."
+curl -L https://github.com/xmrig/xmrig/releases/download/v6.22.0/xmrig-6.22.0-jammy-x64.tar.gz -o xmrig-6.22.0-jammy-x64.tar.gz
 
-# create build folder
-cd xmrig
-mkdir build
-cd build
+echo "# EXTRACTING ARCHIVE..."
+tar -xvf xmrig-6.22.0-jammy-x64.tar.gz
 
-# build
-cmake .. -DWITH_HWLOC=OFF
-make -j10
+echo "# DELETEING ARCHIVE..."
+rm xmrig-6.22.0-jammy-x64.tar.gz
 
-echo "### INSTALL COMPLETE ###"
+echo "# CREATING mine.sh STARTUP SCRIPT..."
+echo "#!/bin/bash
+
+./xmrig -o gulf.moneroocean.stream:10128 -a randomx -u 436b2Htx5guZgFdDxFRNKmeH9ozZfCc89EgN9PdV1LBLHib5iFS88jCe3W1q8BmcA2MrbLtAkCd16SB7CXLShkoTSA79rSj -p $name" > mine.sh
+chmod +x mine.sh
+
+echo "# SUCCESS # TO BEGIN MINING, RUN mine.sh"
